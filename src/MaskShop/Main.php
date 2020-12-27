@@ -51,7 +51,7 @@ class Main extends PluginBase implements Listener {
         $EconomyAPI = $this->getServer()->getPluginManager()->getPlugin("EconomyAPI");
         if(is_null($EconomyAPI)){
             $this->getLogger()->info("§7[§eMaskShop§7] §cPlease install EconomyAPI Plugin, §4disabling plugin...");
-            $this->getPluginLoader()->disablePlugin($this);
+            $this->getServer()->getPluginManager()->disablePlugin($this);
         }
     }
 	
@@ -88,7 +88,7 @@ class Main extends PluginBase implements Listener {
 				       $this->FeatureMenu($sender);
 				    break;
 				case 2:	
-				    $EconomyAPI = $this->getServer()->getPluginManager()->getPlugin("EconomyAPI");
+				        $EconomyAPI = $this->getServer()->getPluginManager()->getPlugin("EconomyAPI");
 					$money = $EconomyAPI->myMoney($sender);
 					$zombie = $this->getConfig()->get("zombie.price");
 					if($money >= $zombie){
@@ -110,7 +110,7 @@ class Main extends PluginBase implements Listener {
 									
 					break;
 				case 3:
-				    $EconomyAPI = $this->getServer()->getPluginManager()->getPlugin("EconomyAPI");
+				        $EconomyAPI = $this->getServer()->getPluginManager()->getPlugin("EconomyAPI");
 					$money = $EconomyAPI->myMoney($sender);
 					$creeper = $this->getConfig()->get("creeper.price");
 					if($money >= $creeper){
@@ -132,8 +132,8 @@ class Main extends PluginBase implements Listener {
 									
 					break;
 				case 4:
-				    $EconomyAPI = $this->getServer()->getPluginManager()->getPlugin("EconomyAPI");
-				    $money = $EconomyAPI->myMoney($sender);
+				        $EconomyAPI = $this->getServer()->getPluginManager()->getPlugin("EconomyAPI");
+				        $money = $EconomyAPI->myMoney($sender);
 					$wither = $this->getConfig()->get("wither.price");
 					if($money >= $wither){
 										
@@ -154,7 +154,7 @@ class Main extends PluginBase implements Listener {
 									
 					break;
 				case 5:	
-				    $EconomyAPI = $this->getServer()->getPluginManager()->getPlugin("EconomyAPI");
+				        $EconomyAPI = $this->getServer()->getPluginManager()->getPlugin("EconomyAPI");
 					$money = $EconomyAPI->myMoney($sender);
 					$dragon = $this->getConfig()->get("dragon.price");
 					if($money >= $dragon){
@@ -176,8 +176,8 @@ class Main extends PluginBase implements Listener {
 									
 					break;
 				case 6:	
-				    $EconomyAPI = $this->getServer()->getPluginManager()->getPlugin("EconomyAPI");
-				    $money = $EconomyAPI->myMoney($sender);
+				        $EconomyAPI = $this->getServer()->getPluginManager()->getPlugin("EconomyAPI");
+				        $money = $EconomyAPI->myMoney($sender);
 					$steve = $this->getConfig()->get("steve.price");
 					if($money >= $steve){
 										
@@ -198,8 +198,8 @@ class Main extends PluginBase implements Listener {
 									
 					break;
 				case 7:
-				    $EconomyAPI = $this->getServer()->getPluginManager()->getPlugin("EconomyAPI");
-				    $money = $EconomyAPI->myMoney($sender);
+				        $EconomyAPI = $this->getServer()->getPluginManager()->getPlugin("EconomyAPI");
+				        $money = $EconomyAPI->myMoney($sender);
 					$skeleton = $this->getConfig()->get("skeleton.price");
 					if($money >= $skeleton){
 										
