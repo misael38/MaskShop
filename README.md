@@ -1,5 +1,5 @@
 # MaskShop
-Buy a Mask use In-Game money
+Buy a Mask use In-Game money with UI
 
 # Plugin Info
  - Command : /maskshop or /mask
