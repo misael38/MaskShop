@@ -16,7 +16,7 @@ class EffectTask extends Task{
         foreach(Main::getInstance()->getServer()->getOnlinePlayers() as $players){
             $inv = $players->getArmorInventory();
             $helmet = $inv->getHelmet();
-            if(!$helmet->getId() === Item::MOB_HEAD) return;
+            if(!$helmet->getId() == Item::MOB_HEAD) return;
             switch($helmet->getDamage()){
                 case 4:
                     $players->addEffect(new EffectInstance(Effect::getEffect(Effect::JUMP_BOOST), 220, 1, false));
