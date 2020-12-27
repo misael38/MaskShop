@@ -47,8 +47,7 @@ class Main extends PluginBase implements Listener {
 	public function onEnable() : void{
 	    self::$instance = $this;
 	    $this->getScheduler()->scheduleRepeatingTask(new EffectTask(), 20);
-        $this->getLogger()->info(TextFormat::GREEN . "§7[MaskShop§7]§a Plugin Enable");
-        $this->eco = $this->getServer()->getPluginManager()->getPlugin("EconomyAPI");	
+        $this->getLogger()->info(TextFormat::GREEN . "§7[MaskShop§7]§a Plugin Enable");	
 	}
 	
 	public static function getInstance() : self{
