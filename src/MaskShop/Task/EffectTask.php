@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace MaskShop\task;
+namespace MaskShop\Task;
 
 use MaskShop\Main;
 use pocketmine\item\Item;
