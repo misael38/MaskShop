@@ -26,8 +26,6 @@ use pocketmine\item\enchantment\EnchantmentInstance;
 use pocketmine\utils\TextFormat;
 use pocketmine\utils\Config;
 
-use onebone\economyapi\EconomyAPI;
-
 use MaskShop\Task\EffectTask;
 
 use libs\FormAPI\SimpleForm;
@@ -51,7 +49,7 @@ class Main extends PluginBase implements Listener {
         $EconomyAPI = $this->getServer()->getPluginManager()->getPlugin("EconomyAPI");
         if(is_null($EconomyAPI)){
             $this->getLogger()->info("§7[§eMaskShop§7] §cPlease install EconomyAPI Plugin, §4disabling plugin...");
-            $this->getServer()->getPluginManager()->disablePlugin($this);
+            $this->getPluginLoader()->disablePlugin($this);
         }
     }
 	
@@ -87,13 +85,11 @@ class Main extends PluginBase implements Listener {
 				case 1:
 				       $this->FeatureMenu($sender);
 				    break;
-				case 2:	
-				        $EconomyAPI = $this->getServer()->getPluginManager()->getPlugin("EconomyAPI");
-					$money = $EconomyAPI->myMoney($sender);
+				case 2:
 					$zombie = $this->getConfig()->get("zombie.price");
-					if($money >= $zombie){
+					if($this->getServer()->getPluginManager()->getPlugin("EconomyAPI")->myMoney($sender) >= $zombie){
 										
-                       $EconomyAPI->reduceMoney($sender, $zombie);
+                       $this->getServer()->getPluginManager()->getPlugin("EconomyAPI")->reduceMoney($sender, $zombie);
                        $name = $sender->getName();
                        $e = Enchantment::getEnchantment(0);
                        $item1 = Item::get(397, 2, 1);
@@ -110,12 +106,10 @@ class Main extends PluginBase implements Listener {
 									
 					break;
 				case 3:
-				        $EconomyAPI = $this->getServer()->getPluginManager()->getPlugin("EconomyAPI");
-					$money = $EconomyAPI->myMoney($sender);
 					$creeper = $this->getConfig()->get("creeper.price");
-					if($money >= $creeper){
+					if($this->getServer()->getPluginManager()->getPlugin("EconomyAPI")->myMoney($sender) >= $creeper){
 										
-                       $EconomyAPI->reduceMoney($sender, $creeper);
+                       $this->getServer()->getPluginManager()->getPlugin("EconomyAPI")->reduceMoney($sender, $creeper);
                        $name = $sender->getName();
                        $e = Enchantment::getEnchantment(0);
                        $item2 = Item::get(397, 4, 1);
@@ -132,12 +126,10 @@ class Main extends PluginBase implements Listener {
 									
 					break;
 				case 4:
-				        $EconomyAPI = $this->getServer()->getPluginManager()->getPlugin("EconomyAPI");
-				        $money = $EconomyAPI->myMoney($sender);
 					$wither = $this->getConfig()->get("wither.price");
-					if($money >= $wither){
+					if($this->getServer()->getPluginManager()->getPlugin("EconomyAPI")->myMoney($sender) >= $wither){
 										
-                       $EconomyAPI->reduceMoney($sender, $wither);
+                       $this->getServer()->getPluginManager()->getPlugin("EconomyAPI")->reduceMoney($sender, $wither);
                        $name = $sender->getName();
                        $e = Enchantment::getEnchantment(0);
                        $item3 = Item::get(397, 1, 1);
@@ -153,13 +145,11 @@ class Main extends PluginBase implements Listener {
                     }
 									
 					break;
-				case 5:	
-				        $EconomyAPI = $this->getServer()->getPluginManager()->getPlugin("EconomyAPI");
-					$money = $EconomyAPI->myMoney($sender);
+				case 5:
 					$dragon = $this->getConfig()->get("dragon.price");
-					if($money >= $dragon){
+					if($this->getServer()->getPluginManager()->getPlugin("EconomyAPI")->myMoney($sender) >= $dragon){
 										
-                       $EconomyAPI->reduceMoney($sender, $dragon);
+                       $this->getServer()->getPluginManager()->getPlugin("EconomyAPI")->reduceMoney($sender, $dragon);
                        $name = $sender->getName();
                        $e = Enchantment::getEnchantment(0);
                        $item5 = Item::get(397, 5, 1);
@@ -176,12 +166,10 @@ class Main extends PluginBase implements Listener {
 									
 					break;
 				case 6:	
-				        $EconomyAPI = $this->getServer()->getPluginManager()->getPlugin("EconomyAPI");
-				        $money = $EconomyAPI->myMoney($sender);
 					$steve = $this->getConfig()->get("steve.price");
-					if($money >= $steve){
+					if($this->getServer()->getPluginManager()->getPlugin("EconomyAPI")->myMoney($sender) >= $steve){
 										
-                       $EconomyAPI->reduceMoney($sender, $steve);
+                       $this->getServer()->getPluginManager()->getPlugin("EconomyAPI")->reduceMoney($sender, $steve);
                        $name = $sender->getName();
                        $e = Enchantment::getEnchantment(0);
                        $item4 = Item::get(397, 3, 1);
@@ -198,12 +186,10 @@ class Main extends PluginBase implements Listener {
 									
 					break;
 				case 7:
-				        $EconomyAPI = $this->getServer()->getPluginManager()->getPlugin("EconomyAPI");
-				        $money = $EconomyAPI->myMoney($sender);
 					$skeleton = $this->getConfig()->get("skeleton.price");
-					if($money >= $skeleton){
+					if($this->getServer()->getPluginManager()->getPlugin("EconomyAPI")->myMoney($sender) >= $skeleton){
 										
-                       $EconomyAPI->reduceMoney($sender, $skeleton);
+                       $this->getServer()->getPluginManager()->getPlugin("EconomyAPI")->reduceMoney($sender, $skeleton);
                        $name = $sender->getName();
                        $e = Enchantment::getEnchantment(0);
                        $item6 = Item::get(397, 0, 1);
