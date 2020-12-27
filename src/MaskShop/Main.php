@@ -6,6 +6,7 @@ use pocketmine\Server;
 use pocketmine\plugin\PluginBase;
 use pocketmine\event\Listener;
 use MaskShop\Task\EffectTask;
+use libs\FormAPI\SimpleForm;
 
 use pocketmine\event\entity\EntityDamageEvent;
 use pocketmine\event\player\PlayerJoinEvent;
@@ -47,7 +48,7 @@ class Main extends PluginBase implements Listener {
 	public function onEnable() : void{
 	    self::$instance = $this;
 	    $this->getScheduler()->scheduleRepeatingTask(new EffectTask(), 20);
-        $this->getLogger()->info(TextFormat::GREEN . "§7[MaskShop§7]§a Plugin Enable");	
+        $this->getLogger()->info(TextFormat::GREEN . "§7[MaskShop§7]§a Plugin Enable");
 	}
 	
 	public static function getInstance() : self{
@@ -68,8 +69,7 @@ class Main extends PluginBase implements Listener {
 	}
 	
 	public function MaskShopForm($sender){
-		$api = $this->getServer()->getPluginManager()->getPlugin("FormAPI");
-		$form = $api->createSimpleForm(function (Player $sender, $data){
+		$form = new SimpleForm(function (Player $sender, $data){
 			$result = $data;
 			if($result === null){
 			}
@@ -83,13 +83,12 @@ class Main extends PluginBase implements Listener {
 				case 1:
 				       $this->FeatureMenu($sender);
 				    break;
-				case 2:
-					   $EconomyAPI = Server::getInstance()->getPluginManager()->getPlugin("EconomyAPI");			
-					   $money = $EconomyAPI->myMoney($sender);
+				case 2:			
+					   $money = Server::getInstance()->getPluginManager()->getPlugin("EconomyAPI")->myMoney($sender);
 					$zombie = $this->getConfig()->get("zombie.price");
 					if($money >= $zombie){
 										
-                       $EconomyAPI->reduceMoney($sender, $zombie);
+                       Server::getInstance()->getPluginManager()->getPlugin("EconomyAPI")->reduceMoney($sender, $zombie);
                        $name = $sender->getName();
                        $e = Enchantment::getEnchantment(0);
                        $item1 = Item::get(397, 2, 1);
@@ -106,12 +105,11 @@ class Main extends PluginBase implements Listener {
 									
 					break;
 				case 3:
-			        $EconomyAPI = Server::getInstance()->getPluginManager()->getPlugin("EconomyAPI");      
-					$money = $EconomyAPI->myMoney($sender);
+					$money = Server::getInstance()->getPluginManager()->getPlugin("EconomyAPI")->myMoney($sender);
 					$creeper = $this->getConfig()->get("creeper.price");
 					if($money >= $creeper){
 										
-                       $EconomyAPI->reduceMoney($sender, $creeper);
+                       Server::getInstance()->getPluginManager()->getPlugin("EconomyAPI")->reduceMoney($sender, $creeper);
                        $name = $sender->getName();
                        $e = Enchantment::getEnchantment(0);
                        $item2 = Item::get(397, 4, 1);
@@ -127,12 +125,11 @@ class Main extends PluginBase implements Listener {
                     }
 									
 					break;
-				case 4:
-					$EconomyAPI = Server::getInstance()->getPluginManager()->getPlugin("EconomyAPI");			    					$money = $EconomyAPI->myMoney($sender);
+				case 4:			    					        $money = Server::getInstance()->getPluginManager()->getPlugin("EconomyAPI")->myMoney($sender);
 					$wither = $this->getConfig()->get("wither.price");
 					if($money >= $wither){
 										
-                       $EconomyAPI->reduceMoney($sender, $wither);
+                       Server::getInstance()->getPluginManager()->getPlugin("EconomyAPI")->reduceMoney($sender, $wither);
                        $name = $sender->getName();
                        $e = Enchantment::getEnchantment(0);
                        $item3 = Item::get(397, 1, 1);
@@ -148,13 +145,12 @@ class Main extends PluginBase implements Listener {
                     }
 									
 					break;
-				case 5:
-					$EconomyAPI = Server::getInstance()->getPluginManager()->getPlugin("EconomyAPI");			  
-					$money = $EconomyAPI->myMoney($sender);
+				case 5:			  
+					$money = Server::getInstance()->getPluginManager()->getPlugin("EconomyAPI")->myMoney($sender);
 					$dragon = $this->getConfig()->get("dragon.price");
 					if($money >= $dragon){
 										
-                       $EconomyAPI->reduceMoney($sender, $dragon);
+                       Server::getInstance()->getPluginManager()->getPlugin("EconomyAPI")->reduceMoney($sender, $dragon);
                        $name = $sender->getName();
                        $e = Enchantment::getEnchantment(0);
                        $item5 = Item::get(397, 5, 1);
@@ -170,12 +166,11 @@ class Main extends PluginBase implements Listener {
                     }
 									
 					break;
-				case 6:
-					$EconomyAPI = Server::getInstance()->getPluginManager()->getPlugin("EconomyAPI");			    					$money = $EconomyAPI->myMoney($sender);
+				case 6:			    					        $money = Server::getInstance()->getPluginManager()->getPlugin("EconomyAPI")->myMoney($sender);
 					$steve = $this->getConfig()->get("steve.price");
 					if($money >= $steve){
 										
-                       $EconomyAPI->reduceMoney($sender, $steve);
+                       Server::getInstance()->getPluginManager()->getPlugin("EconomyAPI")->reduceMoney($sender, $steve);
                        $name = $sender->getName();
                        $e = Enchantment::getEnchantment(0);
                        $item4 = Item::get(397, 3, 1);
@@ -191,12 +186,11 @@ class Main extends PluginBase implements Listener {
                     }
 									
 					break;
-				case 7:
-					$EconomyAPI = Server::getInstance()->getPluginManager()->getPlugin("EconomyAPI");			    					$money = $EconomyAPI->myMoney($sender);
+				case 7:			    					        $money = Server::getInstance()->getPluginManager()->getPlugin("EconomyAPI")->myMoney($sender);
 					$skeleton = $this->getConfig()->get("skeleton.price");
 					if($money >= $skeleton){
 										
-                       $EconomyAPI->reduceMoney($sender, $skeleton);
+                       Server::getInstance()->getPluginManager()->getPlugin("EconomyAPI")->reduceMoney($sender, $skeleton);
                        $name = $sender->getName();
                        $e = Enchantment::getEnchantment(0);
                        $item6 = Item::get(397, 0, 1);
@@ -221,8 +215,7 @@ class Main extends PluginBase implements Listener {
 					
 			});
 			 
-			$EconomyAPI = Server::getInstance()->getPluginManager()->getPlugin("EconomyAPI"); 
-			$money = $EconomyAPI->myMoney($sender);
+			$money = Server::getInstance()->getPluginManager()->getPlugin("EconomyAPI")->myMoney($sender);
 			$zombie = $this->getConfig()->get("zombie.price");
 			$wither = $this->getConfig()->get("wither.price");
 			$dragon = $this->getConfig()->get("dragon.price");
@@ -247,8 +240,7 @@ class Main extends PluginBase implements Listener {
     }
     
     public function FeatureMenu($sender){
-        $api = $this->getServer()->getPluginManager()->getPlugin("FormAPI");
-		$form = $api->createSimpleForm(function (Player $sender, $data){
+        $form = new SimpleForm(function (Player $sender, $data){
 			$result = $data;
 			if($result === null){
 			}
