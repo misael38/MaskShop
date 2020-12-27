@@ -1,0 +1,12 @@
+name: MaskShop
+main: MaskShop\Main
+api: [3.0.0]
+version: 1.0.2
+author: misael38
+description: "buy a mask!"
+github: github.com/misael38
+
+commands:
+ maskshop:
+  aliases: ["mask"]
+  description: "Buy a mask using money In-Game"
