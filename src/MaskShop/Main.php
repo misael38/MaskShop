@@ -3,39 +3,34 @@
 namespace MaskShop;
 
 use pocketmine\Server;
+use pocketmine\Player;
 use pocketmine\plugin\PluginBase;
 use pocketmine\event\Listener;
-use MaskShop\Task\EffectTask;
-use libs\FormAPI\SimpleForm;
 
-use pocketmine\event\entity\EntityDamageEvent;
-use pocketmine\event\player\PlayerJoinEvent;
-use pocketmine\event\entity\EntityDamageByEntityEvent;
-use pocketmine\event\entity\EntityLevelChangeEvent;
-use pocketmine\event\player\PlayerMoveEvent;
 use pocketmine\entity\Effect;
 use pocketmine\entity\EffectInstance;
+
 use pocketmine\level\sound\EndermanTeleportSound;
 use pocketmine\level\sound\AnvilFallSound;
 use pocketmine\level\sound\Sound;
-use pocketmine\item\enchantment\Enchantment;
 
-use pocketmine\Player;
 use pocketmine\command\Command;
 use pocketmine\command\CommandSender;
 use pocketmine\command\CommandExecutor;
 use pocketmine\command\ConsoleCommandSender;
 
 use pocketmine\item\Item;
-use pocketmine\lang\BaseLang;
+use pocketmine\item\enchantment\Enchantment;
 use pocketmine\item\enchantment\EnchantmentInstance;
-use pocketmine\block\Block;
-use pocketmine\math\Vector3;
+
 use pocketmine\utils\TextFormat;
 use pocketmine\utils\Config;
 
 use onebone\economyapi\EconomyAPI;
 
+use MaskShop\Task\EffectTask;
+
+use libs\FormAPI\SimpleForm;
 use jojoe77777\FormAPI;
 
 class Main extends PluginBase implements Listener {
@@ -49,7 +44,16 @@ class Main extends PluginBase implements Listener {
 	    self::$instance = $this;
 	    $this->getScheduler()->scheduleRepeatingTask(new EffectTask(), 20);
         $this->getLogger()->info(TextFormat::GREEN . "§7[MaskShop§7]§a Plugin Enable");
-	}
+        $this->checkDepends();
+    }
+
+    public function checkDepends(){
+        $EconomyAPI = $this->getServer()->getPluginManager()->getPlugin("EconomyAPI");
+        if(is_null($EconomyAPI)){
+            $this->getLogger()->info("§7[§eMaskShop§7] §cPlease install EconomyAPI Plugin, §4disabling plugin...");
+            $this->getPluginLoader()->disablePlugin($this);
+        }
+    }
 	
 	public static function getInstance() : self{
 	    return self::$instance;
@@ -83,17 +87,18 @@ class Main extends PluginBase implements Listener {
 				case 1:
 				       $this->FeatureMenu($sender);
 				    break;
-				case 2:			
-					   $money = Server::getInstance()->getPluginManager()->getPlugin("EconomyAPI")->myMoney($sender);
+				case 2:	
+				    $EconomyAPI = $this->getServer()->getPluginManager()->getPlugin("EconomyAPI");
+					$money = $EconomyAPI->myMoney($sender);
 					$zombie = $this->getConfig()->get("zombie.price");
 					if($money >= $zombie){
 										
-                       Server::getInstance()->getPluginManager()->getPlugin("EconomyAPI")->reduceMoney($sender, $zombie);
+                       $EconomyAPI->reduceMoney($sender, $zombie);
                        $name = $sender->getName();
                        $e = Enchantment::getEnchantment(0);
                        $item1 = Item::get(397, 2, 1);
                        $item1->setCustomName("§2Zombie §eMask \n§bOwner: §c$name");
-					   $item1->addEnchantment(new EnchantmentInstance($e, 4, 1));
+					   $item1->addEnchantment(new EnchantmentInstance($e, 4));
                        $sender->getInventory()->addItem($item1);
                        $sender->getLevel()->addSound(new EndermanTeleportSound($sender));
 					   $sender->sendMessage($this->getConfig()->get("msg.shop.zombie"));
@@ -105,16 +110,17 @@ class Main extends PluginBase implements Listener {
 									
 					break;
 				case 3:
-					$money = Server::getInstance()->getPluginManager()->getPlugin("EconomyAPI")->myMoney($sender);
+				    $EconomyAPI = $this->getServer()->getPluginManager()->getPlugin("EconomyAPI");
+					$money = $EconomyAPI->myMoney($sender);
 					$creeper = $this->getConfig()->get("creeper.price");
 					if($money >= $creeper){
 										
-                       Server::getInstance()->getPluginManager()->getPlugin("EconomyAPI")->reduceMoney($sender, $creeper);
+                       $EconomyAPI->reduceMoney($sender, $creeper);
                        $name = $sender->getName();
                        $e = Enchantment::getEnchantment(0);
                        $item2 = Item::get(397, 4, 1);
                        $item2->setCustomName("§aCreeper §eMask \n§bOwner: §c$name");
-					   $item2->addEnchantment(new EnchantmentInstance($e, 4, 1));
+					   $item2->addEnchantment(new EnchantmentInstance($e, 4));
                        $sender->getInventory()->addItem($item2);
                        $sender->getLevel()->addSound(new EndermanTeleportSound($sender));
 					   $sender->sendMessage($this->getConfig()->get("msg.shop.creeper"));
@@ -125,16 +131,18 @@ class Main extends PluginBase implements Listener {
                     }
 									
 					break;
-				case 4:			    					        $money = Server::getInstance()->getPluginManager()->getPlugin("EconomyAPI")->myMoney($sender);
+				case 4:
+				    $EconomyAPI = $this->getServer()->getPluginManager()->getPlugin("EconomyAPI");
+				    $money = $EconomyAPI->myMoney($sender);
 					$wither = $this->getConfig()->get("wither.price");
 					if($money >= $wither){
 										
-                       Server::getInstance()->getPluginManager()->getPlugin("EconomyAPI")->reduceMoney($sender, $wither);
+                       $EconomyAPI->reduceMoney($sender, $wither);
                        $name = $sender->getName();
                        $e = Enchantment::getEnchantment(0);
                        $item3 = Item::get(397, 1, 1);
                        $item3->setCustomName("§7Wither §eMask \n§bOwner: §c$name");
-					   $item3->addEnchantment(new EnchantmentInstance($e, 4, 1));
+					   $item3->addEnchantment(new EnchantmentInstance($e, 4));
                        $sender->getInventory()->addItem($item3);
                        $sender->getLevel()->addSound(new EndermanTeleportSound($sender));
 					   $sender->sendMessage($this->getConfig()->get("msg.shop.wither"));
@@ -145,17 +153,18 @@ class Main extends PluginBase implements Listener {
                     }
 									
 					break;
-				case 5:			  
-					$money = Server::getInstance()->getPluginManager()->getPlugin("EconomyAPI")->myMoney($sender);
+				case 5:	
+				    $EconomyAPI = $this->getServer()->getPluginManager()->getPlugin("EconomyAPI");
+					$money = $EconomyAPI->myMoney($sender);
 					$dragon = $this->getConfig()->get("dragon.price");
 					if($money >= $dragon){
 										
-                       Server::getInstance()->getPluginManager()->getPlugin("EconomyAPI")->reduceMoney($sender, $dragon);
+                       $EconomyAPI->reduceMoney($sender, $dragon);
                        $name = $sender->getName();
                        $e = Enchantment::getEnchantment(0);
                        $item5 = Item::get(397, 5, 1);
                        $item5->setCustomName("§cDragon §eMask \n§bOwner: §c$name");
-					   $item5->addEnchantment(new EnchantmentInstance($e, 4, 1));
+					   $item5->addEnchantment(new EnchantmentInstance($e, 4));
                        $sender->getInventory()->addItem($item5);
                        $sender->getLevel()->addSound(new EndermanTeleportSound($sender));
 					   $sender->sendMessage($this->getConfig()->get("msg.shop.dragon"));
@@ -166,16 +175,18 @@ class Main extends PluginBase implements Listener {
                     }
 									
 					break;
-				case 6:			    					        $money = Server::getInstance()->getPluginManager()->getPlugin("EconomyAPI")->myMoney($sender);
+				case 6:	
+				    $EconomyAPI = $this->getServer()->getPluginManager()->getPlugin("EconomyAPI");
+				    $money = $EconomyAPI->myMoney($sender);
 					$steve = $this->getConfig()->get("steve.price");
 					if($money >= $steve){
 										
-                       Server::getInstance()->getPluginManager()->getPlugin("EconomyAPI")->reduceMoney($sender, $steve);
+                       $EconomyAPI->reduceMoney($sender, $steve);
                        $name = $sender->getName();
                        $e = Enchantment::getEnchantment(0);
                        $item4 = Item::get(397, 3, 1);
                        $item4->setCustomName("§3Steve §eMask \n§bOwner: §c$name");
-					   $item4->addEnchantment(new EnchantmentInstance($e, 4, 1));
+					   $item4->addEnchantment(new EnchantmentInstance($e, 4));
                        $sender->getInventory()->addItem($item4);
                        $sender->getLevel()->addSound(new EndermanTeleportSound($sender));
 					   $sender->sendMessage($this->getConfig()->get("msg.shop.steve"));
@@ -186,16 +197,18 @@ class Main extends PluginBase implements Listener {
                     }
 									
 					break;
-				case 7:			    					        $money = Server::getInstance()->getPluginManager()->getPlugin("EconomyAPI")->myMoney($sender);
+				case 7:
+				    $EconomyAPI = $this->getServer()->getPluginManager()->getPlugin("EconomyAPI");
+				    $money = $EconomyAPI->myMoney($sender);
 					$skeleton = $this->getConfig()->get("skeleton.price");
 					if($money >= $skeleton){
 										
-                       Server::getInstance()->getPluginManager()->getPlugin("EconomyAPI")->reduceMoney($sender, $skeleton);
+                       $EconomyAPI->reduceMoney($sender, $skeleton);
                        $name = $sender->getName();
                        $e = Enchantment::getEnchantment(0);
                        $item6 = Item::get(397, 0, 1);
                        $item6->setCustomName("§fSkeleton §eMask \n§bOwner: §c$name");
-					   $item6->addEnchantment(new EnchantmentInstance($e, 4, 1));
+					   $item6->addEnchantment(new EnchantmentInstance($e, 4));
                        $sender->getInventory()->addItem($item6);
                        $sender->addEffect(new EffectInstance(Effect::getEffect(Effect::HASTE), 22000, 2, false));
                     $sender->addEffect(new EffectInstance(Effect::getEffect(Effect::NIGHT_VISION), 22000, 2, false));
@@ -214,8 +227,9 @@ class Main extends PluginBase implements Listener {
 					}
 					
 			});
-			 
-			$money = Server::getInstance()->getPluginManager()->getPlugin("EconomyAPI")->myMoney($sender);
+			
+			$EconomyAPI = $this->getServer()->getPluginManager()->getPlugin("EconomyAPI"); 
+			$money = $EconomyAPI->myMoney($sender);
 			$zombie = $this->getConfig()->get("zombie.price");
 			$wither = $this->getConfig()->get("wither.price");
 			$dragon = $this->getConfig()->get("dragon.price");
