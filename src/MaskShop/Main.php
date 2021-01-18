@@ -51,7 +51,7 @@ class Main extends PluginBase implements Listener {
 
     public function checkDepends(){
         $this->eco = $this->getServer()->getPluginManager()->getPlugin("EconomyAPI");
-        if(is_null($EconomyAPI)){
+        if(is_null($this->eco)){
             $this->getLogger()->info("§7[§eMaskShop§7] §cPlease install EconomyAPI Plugin, §4disabling plugin...");
             $this->getServer()->getPluginManager()->disablePlugin($this);
         }
